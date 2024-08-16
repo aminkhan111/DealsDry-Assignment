@@ -26,10 +26,27 @@ console.log(body);
     }
 }
 
+
+
+
 const getAllEmployees = async (req, res) => {
     try {
+
+ // Get page and limit from query parameters
+ let { page, limit, search } = req.query;
+
+ // Set default values if they are not provided
+ page = parseInt(page) || 1;
+ limit = parseInt(limit) || 10;
+
+ // Calculate the number of documents to skip
+ const skip = (page - 1) * limit;
+
+
+
+
         // Build the search criteria
-        let { search } = req.query;
+         
         let searchCriteria = {};
 
  
@@ -42,26 +59,45 @@ const getAllEmployees = async (req, res) => {
      }
  }
  
-  
- 
-        const emps = await EmployeeModel.find (searchCriteria);
+
+        
+  // Get the total number of employees for pagination info
+  const totalEmployees = await EmployeeModel.countDocuments(searchCriteria);
+
+  // Fetch the employees with pagination
+  const emps = await EmployeeModel.find(searchCriteria)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdate: -1 });
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalEmployees / limit);
       
-        res.status(200)
-            .json({
-                message: 'All Employees',
-                success: true,
-                data: emps 
-                
-            })
-    } catch (err) {
-         
-        res.status(500).json({
-            message: 'Internal Server Error',
-            success: false,
-            error: err
+  res.status(200)
+  .json({
+      message: 'All Employees',
+      success: true,
+      data: {
+          employees: emps,
+          pagination: {
+              totalEmployees,
+              currentPage: page,
+              totalPages,
+              pageSize: limit
+          }
+      }
+  });
+} catch (err) {
+console.log(err);
+res.status(500).json({
+  message: 'Internal Server Error',
+  success: false,
+  error: err
         });
     }
 };
+
+
 
 
 const getEmployeebyId = async (req, res) => {
@@ -113,7 +149,7 @@ const updateEmployeeById = async (req, res) => {
         const { name, email, mobileno,designation, gender, course, createdate } = req.body;
         
         let updateData = {
-            name,email,mobileno,designation,gender,course, createdate: new Date()
+            name,email,mobileno,designation,gender,course, createdate 
         }
 
         if(req.file){
