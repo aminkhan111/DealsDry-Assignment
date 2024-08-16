@@ -7,7 +7,17 @@ const PORT = process.env.PORT || 8080;
 
 require('./Models/db');
 
+const EmployeeRouter = require('./Routes/EmployeeRoutes');
 
+app.use(bodyParser.json());
+
+app.get('/', (req, res) => {
+    res.send('Employee Mgm Server is running');
+});
+
+
+
+app.use('/api/employees', EmployeeRouter);
 
 
 app.listen(PORT, () => {
