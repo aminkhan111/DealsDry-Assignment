@@ -28,7 +28,24 @@ console.log(body);
 
 const getAllEmployees = async (req, res) => {
     try {
-        const emps = await EmployeeModel.find ({});
+        // Build the search criteria
+        let { search } = req.query;
+        let searchCriteria = {};
+
+ 
+ if (search) {
+     searchCriteria = {
+         name: {
+             $regex: search,
+             $options: 'i' // case insensitive
+         }
+     }
+ }
+ 
+  
+ 
+        const emps = await EmployeeModel.find (searchCriteria);
+      
         res.status(200)
             .json({
                 message: 'All Employees',
@@ -45,6 +62,7 @@ const getAllEmployees = async (req, res) => {
         });
     }
 };
+
 
 const getEmployeebyId = async (req, res) => {
     try {
