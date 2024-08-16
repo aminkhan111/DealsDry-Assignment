@@ -46,9 +46,53 @@ const getAllEmployees = async (req, res) => {
     }
 };
 
+const getEmployeebyId = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const emp = await EmployeeModel.findOne({ _id: id });
+
+        res.status(200)
+            .json({
+                message: 'Get Employees Details',
+                success: true,
+                data: emp 
+                
+            })
+    } catch (err) {
+         
+        res.status(500).json({
+            message: 'Internal Server Error',
+            success: false,
+            error: err
+        });
+    }
+};
+
+const deleteEmployeebyId = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const emp = await EmployeeModel.findOneAndDelete({ _id: id });
+
+        res.status(200)
+            .json({
+                message: 'Employee Deleted',
+                success: true,
+                  
+            })
+    } catch (err) {
+         
+        res.status(500).json({
+            message: 'Internal Server Error',
+            success: false,
+            error: err
+        });
+    }
+};
+
 
 module.exports = {
     createEmployee,
-    getAllEmployees
-     
+    getAllEmployees,
+    getEmployeebyId,
+    deleteEmployeebyId
 }

@@ -1,6 +1,6 @@
 const routes = require('express').Router();
 
-const { createEmployee , getAllEmployees,   } = require('../Controllers/EmployeeController');
+const { createEmployee , getAllEmployees, getEmployeebyId , deleteEmployeebyId  } = require('../Controllers/EmployeeController');
 
 const { cloudinaryFileUploader } = require('../Middlewares/FileUplaoder');
 
@@ -9,6 +9,8 @@ routes.get('/', getAllEmployees);
 
 routes.post('/', cloudinaryFileUploader.single('profileImage'), createEmployee);
 
+routes.get('/:id', getEmployeebyId);
 
+routes.delete('/:id', deleteEmployeebyId);
 
 module.exports = routes;
