@@ -9,11 +9,13 @@ const EmployeeSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        match: [/.+@.+\..+/, 'Please enter a valid email address'],
     },
     mobileno: {
         type: String,
-        required: true
+        required: true,
+        match: [/^\d{10}$/, 'Please enter a valid 10-digit mobile number'],
     },
     designation: {
         type: String,
@@ -31,8 +33,8 @@ const EmployeeSchema = new Schema({
         type: Date,
         default: new Date()
     },
-    profileImage: {
-        type: String
+    profileImage: { 
+        type: String 
     },
      
      
@@ -40,3 +42,4 @@ const EmployeeSchema = new Schema({
 
 const EmployeeModel = mongoose.model('employees', EmployeeSchema);
 module.exports = EmployeeModel;
+
