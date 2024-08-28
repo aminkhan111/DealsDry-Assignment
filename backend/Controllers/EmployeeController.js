@@ -17,6 +17,51 @@ console.log(body);
                 success: true
             });
     } catch (err) {
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({
+              message: 'Validation Error',
+              success: false,
+              errors: err.errors,
+        });
+    }
+     // Handle other errors
+     res.status(500).json({
+        message: 'Internal Server Error',
+        success: false,
+        error: err.message,
+    });
+}
+}
+const updateEmployeeById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, email, mobileno,designation, gender, course, createdate } = req.body;
+        
+        let updateData = {
+            name,email,mobileno,designation,gender,course, createdate
+        }
+
+        if(req.file){
+            updateData.profileImage = req.file.path;
+        }
+ 
+        const updateEmployee = await EmployeeModel.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true }
+        );
+
+        if (!updateEmployee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+        
+        res.status(200)
+            .json({
+                message: 'Employee Updated',
+                success: true,
+                data: updateEmployee
+            });
+    } catch (err) {
         console.log('Error ', err);
         res.status(500).json({
             message: 'Internal Server Error',
@@ -25,7 +70,6 @@ console.log(body);
         })
     }
 }
-
 
 
 
@@ -60,6 +104,7 @@ const getAllEmployees = async (req, res) => {
  }
  
 
+ 
         
   // Get the total number of employees for pagination info
   const totalEmployees = await EmployeeModel.countDocuments(searchCriteria);
@@ -96,8 +141,6 @@ res.status(500).json({
         });
     }
 };
-
-
 
 
 const getEmployeebyId = async (req, res) => {
@@ -142,46 +185,6 @@ const deleteEmployeebyId = async (req, res) => {
         });
     }
 };
-
-const updateEmployeeById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { name, email, mobileno,designation, gender, course, createdate } = req.body;
-        
-        let updateData = {
-            name,email,mobileno,designation,gender,course, createdate 
-        }
-
-        if(req.file){
-            updateData.profileImage = req.file.path;
-        }
- 
-        const updateEmployee = await EmployeeModel.findByIdAndUpdate(
-            id,
-            updateData,
-            { new: true }
-        );
-
-        if (!updateEmployee) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        
-        res.status(200)
-            .json({
-                message: 'Employee Updated',
-                success: true,
-                data: updateEmployee
-            });
-    } catch (err) {
-        console.log('Error ', err);
-        res.status(500).json({
-            message: 'Internal Server Error',
-            success: false,
-            error: err
-        })
-    }
-}
-
 
 module.exports = {
     createEmployee,
