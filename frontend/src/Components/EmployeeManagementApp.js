@@ -40,9 +40,7 @@ useEffect(() => {
   fetchEmployees();
 }, [])
 
-// if (!employee) {
-//   return <div>Employee not found</div>;
-// }
+ 
 
 const handleAddEmployee = () => {
   setShowModal(true)
@@ -77,7 +75,7 @@ const handleSearch =(e)=> {
 
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center w-100 p-3">
+    <div className="d-flex flex-column justify-content-center align-items-center w-90 p-3">
       <h1>Employee List </h1>
       <div className="w-100 d-flex justify-content-center">
         <div className="w-90 border bg-light p-3" style={{ width: "90%" }}>
