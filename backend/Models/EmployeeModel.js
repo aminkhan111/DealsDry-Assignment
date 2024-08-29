@@ -1,3 +1,4 @@
+const employeeConnection = require('./dbEmployee');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -29,17 +30,14 @@ const EmployeeSchema = new Schema({
         type: String,
         required: true
     },
-     createdate: {
+    createdate: {
         type: Date,
         default: new Date()
     },
     profileImage: { 
         type: String 
     },
-     
-     
 });
 
-const EmployeeModel = mongoose.model('employees', EmployeeSchema);
+const EmployeeModel = employeeConnection.model('employees', EmployeeSchema);
 module.exports = EmployeeModel;
-
