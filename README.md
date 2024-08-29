@@ -1,7 +1,7 @@
 # Employee Management Application
 
 ## Overview
-This is an Employee Management Application built to manage employee records, including the ability to create, edit, delete, and search for employees. The application is designed for use by an admin, who can securely log in using JWT authentication.
+This is an Employee Management Application built to manage employee records, including the ability to create, edit, delete, and search for employees. The application is designed for use by an admin, who can securely login using JWT authentication.
 
 ## Features
 - **Admin Authentication:**
@@ -62,4 +62,6 @@ The total number of employees is displayed on the dashboard.
 **Frontend: HTML, CSS, JavaScript, Bootstrap**
 **Backend: Node.js, Express.js**
 **Database: MongoDB**
-**Authentication: JWT (JSON Web Tokens)**
+
+**[Download the demo video]** (https://drive.google.com/file/d/your-video-id/view)
+
