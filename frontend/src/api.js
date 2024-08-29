@@ -34,9 +34,9 @@ try {
 // FormData handles the headers and content type
     const options = {
         method: 'POST',
-            // 'Content-Type': 'application/json',
+             
         body: formData
-        // body:JSON.stringify(empObj)
+        
     };
     const result = await fetch(url, options);
     const  data  = await result.json();
@@ -51,7 +51,7 @@ return err;
 export const UpdateEmployeeById = async (empObj, id) => {
     const url = `${BASE_URL}/api/employees/${id}`;
     console.log('url ', url);
-    // Create a FormData object
+    // Create FormData object
     const formData = new FormData();
 
     // Append all fields to the FormData object
