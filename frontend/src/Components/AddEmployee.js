@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CreateEmployee, UpdateEmployeeById } from "../api";
 import { notify } from "../utils";
-import { Await } from "react-router-dom";
+// import { Await } from "react-router-dom";
 
 
 
@@ -13,19 +13,34 @@ function AddEmployee({ showModal, setShowModal, fetchEmployees , updateEmpObj })
         mobileno: '',
         designation: '',
         gender: '',
-        course: '',
+        course: [],
         profileImage: null
     });
     const [validationErrors, setValidationErrors] = useState({});
 
     const [updateMode, setUpdateMode] = useState(false);
-    useEffect(() => {
-      if(updateEmpObj){
+    // #1 --Changes In use effect 
+
+    // useEffect(() => {
+    //   if(updateEmpObj){
         
-        setUpdateMode(true);
-        setEmployee(updateEmpObj );
+    //     setUpdateMode(true);
+    //     setEmployee(updateEmpObj );
+    //   }
+    // }, [updateEmpObj])
+
+
+    useEffect(() => {
+      if (updateEmpObj) {
+          setUpdateMode(true);
+          setEmployee({
+              ...updateEmpObj,
+              course: Array.isArray(updateEmpObj.course) ? updateEmpObj.course : [] // Ensure 'course' is an array
+          });
       }
-    }, [updateEmpObj])
+  }, [updateEmpObj]);
+
+
     const resetEmployeeStates = () => {
       setEmployee({
         name: '',
@@ -33,7 +48,7 @@ function AddEmployee({ showModal, setShowModal, fetchEmployees , updateEmpObj })
         mobileno: '',
         designation: '',
         gender: '',
-        course: '',
+        course: [], // change in to Array
         profileImage: null
       })
   }
@@ -43,11 +58,36 @@ function AddEmployee({ showModal, setShowModal, fetchEmployees , updateEmpObj })
     // setUpdateMode(false);
     // resetEmployeeStates();
   };
+  //# 2 in second changes
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setEmployee({ ...employee, [name]: value });
+  // };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmployee({ ...employee, [name]: value });
+    const { name, value, checked, type } = e.target;
+  
+    if (type === 'checkbox') {
+        setEmployee((prevState) => {
+            if (checked) {
+                // Add the course to the array if checked
+                return { ...prevState, course: [...prevState.course, value] };
+            } else {
+                // Remove the course from the array if unchecked
+                return {
+                    ...prevState,
+                    course: prevState.course.filter((course) => course !== value),
+                };
+            }
+        });
+    } else {
+        setEmployee({ ...employee, [name]: value });
+    }
   };
 
+
+  
   const handleFileChange = (e) => {
     setEmployee({ ...employee, profileImage: e.target.files[0] });
 };

@@ -55,7 +55,7 @@ const handlePagination = (currPage) => {
         <td>{employee.mobileno}</td>
         <td>{employee.designation}</td>
         <td>{employee.gender}</td>
-        <td>{employee.course}</td>
+        <td>{employee.course.join(' ')}</td>
         <td>{new Date(employee.createdate).toLocaleDateString("en-GB")}</td>
         <td>
           <i

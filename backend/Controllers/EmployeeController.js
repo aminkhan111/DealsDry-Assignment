@@ -5,6 +5,11 @@ const createEmployee = async (req, res) => {
         const body = req.body;
         const profileImage = req?.file ? req?.file?.path : null;
 
+        if (typeof body.course === 'string') {
+            body.course = body.course.split(','); // Assuming it's comma-separated
+            
+        }
+
 console.log(body);
 
         body.profileImage = profileImage;
@@ -41,10 +46,19 @@ const updateEmployeeById = async (req, res) => {
             name,email,mobileno,designation,gender,course, createdate
         }
 
+        // if(req.file){
+        //     updateData.profileImage = req.file.path;
+        // }
+ 
+        if (typeof course === 'string') {
+            updateData.course = course.split(','); // Assuming it's comma-separated
+        } else {
+            updateData.course = course;
+        }
         if(req.file){
             updateData.profileImage = req.file.path;
         }
- 
+
         const updateEmployee = await EmployeeModel.findByIdAndUpdate(
             id,
             updateData,

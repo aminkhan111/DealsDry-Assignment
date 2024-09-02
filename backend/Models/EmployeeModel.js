@@ -27,8 +27,8 @@ const EmployeeSchema = new Schema({
         required: true
     },
     course: {
-        type: String,
-        required: true
+        type: [String],
+        default : [ ]
     },
     createdate: {
         type: Date,
